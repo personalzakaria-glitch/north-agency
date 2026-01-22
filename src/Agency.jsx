@@ -9,27 +9,22 @@ export default function NorthAgency() {
 
   const sectionRefs = useRef([]);
 
-  const PRICING = {
-    packages: {
-      'Express': [200, 300],
-      'Starter': [300, 500],
-      'Business': [1000, 2000],
-      'Custom': [0, 0]
-    },
-    addons: {
-      'Landing Page': [300, 400],
-      'SEO Setup': [50, 100],
-      'Speed Optimization': [25, 50],
-      'Website Redesign': [150, 300],
-      'Hosting Setup': [50, 100],
-      'Copywriting': [50, 100]
-    },
-    maintenance: {
-      'Basic Care': [50, 50],
-      'Growth Care': [75, 75],
-      'Website Growth': [150, 150]
-    }
-  };
+const PRICING = {
+  packages: {
+    Starter: [399, 399],
+    Business: [799, 799],
+    Premium: [1499, 1499],
+    Custom: [0, 0],
+  },
+  addons: {
+    "Extra Page": [75, 75],
+    Booking: [150, 150],
+  },
+  maintenance: {
+    Care: [49, 49],
+    Growth: [149, 149],
+  },
+};
 
   const QuoteCalculator = () => {
     const [pkg, setPkg] = useState('');
@@ -259,134 +254,85 @@ export default function NorthAgency() {
     { icon: Users, title: 'Small Business Websites', desc: 'Affordable web solutions built for small businesses. Get online fast with a site that actually brings in customers.' },
     { icon: Award, title: 'Landing Pages', desc: 'High-converting landing pages designed to capture leads and drive sales. Perfect for campaigns and product launches.' }
   ];
+const packages = [
+  {
+    name: "Starter",
+    price: "$399",
+    description: "Best for simple business sites.",
+    features: [
+      "1–3 pages",
+      "Mobile-responsive design",
+      "Contact form",
+      "Basic SEO setup",
+    ],
+    highlight: false,
+  },
+  {
+    name: "Business",
+    price: "$799",
+    description: "Best for growing businesses.",
+    features: [
+      "Up to 6 pages",
+      "Better UI/UX layout",
+      "Speed optimization",
+      "SEO setup",
+      "Lead capture form",
+    ],
+    highlight: true,
+  },
+  {
+    name: "Premium",
+    price: "$1,499",
+    description: "Best for brands that want the best.",
+    features: [
+      "Up to 10 pages",
+      "Premium UI/UX design",
+      "Advanced performance optimization",
+      "SEO setup",
+      "Priority support",
+    ],
+    highlight: false,
+  },
+  {
+    name: "Custom",
+    price: "By Quote",
+    description: "Custom scope & advanced features.",
+    features: [
+      "Custom design + features",
+      "Integrations",
+      "E-commerce (optional)",
+      "Custom timeline",
+    ],
+    highlight: false,
+  },
+];
+const addons = [
+  {
+    name: "Extra Page",
+    price: "+$75",
+    desc: "Add an extra page to your website",
+  },
+  {
+    name: "Booking",
+    price: "+$150",
+    desc: "Booking system / appointment integration",
+  },
+];
 
-  const packages = [
-    {
-      name: '24-Hour Website',
-      price: '$400',
-      description: 'Fast-launch landing page with minimal scope.',
-      features: [
-        '1-page landing website',
-        'Professional pre-built template',
-        'Mobile-responsive design',
-        'Contact form',
-        '24-hour delivery',
-        '1 revision only'
-      ],
-      highlight: false
-    },
-    {
-      name: 'Starter Website',
-      price: '$500 – $800',
-      description: 'Professional website to establish credibility.',
-      features: [
-        '1–3 pages',
-        'Customized template design',
-        'Mobile-responsive layout',
-        'Basic on-page SEO',
-        'Contact form',
-        '7–10 day delivery'
-      ],
-      highlight: false
-    },
-    {
-      name: 'Business Website',
-      price: '$1,500 – $2,500',
-      description: 'Conversion-focused website built to grow your business.',
-      features: [
-        '5–8 pages',
-        'Semi-custom UI-focused design',
-        'CMS (WordPress or Webflow)',
-        'SEO setup (on-page + structure)',
-        'Speed optimization',
-        'Lead capture forms',
-        '2–3 week delivery'
-      ],
-      highlight: true
-    },
-    {
-      name: 'Custom Website',
-      price: 'By Quote',
-      description: 'Fully custom solution for advanced requirements.',
-      features: [
-        'Fully custom design',
-        'Advanced functionality',
-        'E-commerce or integrations',
-        'Priority communication',
-        'Custom scope & pricing'
-      ],
-      highlight: false
-    }
-  ];
-
-  const addons = [
-    {
-      name: 'Landing Page',
-      price: '$300 – $600',
-      desc: 'High-converting standalone landing page'
-    },
-    {
-      name: 'SEO Setup',
-      price: '$400 – $800',
-      desc: 'On-page SEO, structure, and indexing setup'
-    },
-    {
-      name: 'Speed Optimization',
-      price: '$250 – $500',
-      desc: 'Improve loading speed and performance'
-    },
-    {
-      name: 'Website Redesign',
-      price: '$1,500 – $3,000',
-      desc: 'Modern redesign of an existing website'
-    },
-    {
-      name: 'Hosting Setup',
-      price: '$150 – $300',
-      desc: 'Professional hosting and domain configuration'
-    },
-    {
-      name: 'Copywriting',
-      price: '$50 – $100 / page',
-      desc: 'Conversion-focused website content'
-    }
-  ];
-
-  const maintenance = [
-    {
-      name: 'Basic Care',
-      price: '$50 / month',
-      features: [
-        'Core updates',
-        'Regular backups',
-        'Security monitoring',
-        'Email support'
-      ],
-      popular: false
-    },
-    {
-      name: 'Growth Care',
-      price: '$150 / month',
-      features: [
-        'Content updates (limited)',
-        'Performance optimization',
-        'Monthly reports',
-        'Priority email support'
-      ],
-      popular: true
-    },
-    {
-      name: 'Website Growth',
-      price: '$300 – $600 / month',
-      features: [
-        'Ongoing improvements',
-        'UX enhancements',
-        'SEO adjustments',
-        'Cancel anytime'
-      ],
-      popular: false
-    }
-  ];
+const maintenance = [
+  {
+    name: "Care",
+    price: "$49 / month",
+    features: ["Updates", "Backups", "Security monitoring", "Email support"],
+    popular: false,
+  },
+  {
+    name: "Growth",
+    price: "$149 / month",
+    features: ["Content updates", "Performance checks", "Priority support"],
+    popular: true,
+  },
+];
 
   const projects = [
     { name: 'Buildify', category: 'AI Agent Platform', year: '2024', url: 'https://buildify-north.vercel.app/', desc: 'Intelligent AI platform helping businesses automate workflows and scale operations' },
@@ -592,7 +538,7 @@ export default function NorthAgency() {
             Add-On Services
           </h3>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-24">
             {addons.map((addon, i) => (
               <div
                 key={i}
@@ -611,7 +557,7 @@ export default function NorthAgency() {
             Maintenance & Support
           </h3>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {maintenance.map((plan, i) => (
               <div
                 key={i}
