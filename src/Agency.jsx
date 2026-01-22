@@ -493,6 +493,41 @@ const maintenance = [
         </div>
       </section>
 
+            <section id="work" className="py-24 px-6 bg-white" ref={(el) => (sectionRefs.current[3] = el)} data-section="work">
+        <div className="max-w-7xl mx-auto">
+          <h2 className={`text-5xl md:text-6xl font-display font-bold mb-4 text-center tracking-tight fade-in-up ${visibleSections.has('work') ? 'visible' : ''}`}>
+            Selected Work
+          </h2>
+          <p className={`text-center text-neutral-600 mb-16 fade-in-up stagger-1 ${visibleSections.has('work') ? 'visible' : ''}`}>
+            Recent projects we're proud of
+          </p>
+
+          <div className="space-y-1">
+            {projects.map((project, i) => (
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                key={i}
+                className={`border-t border-neutral-200 py-8 hover:bg-neutral-50 transition cursor-pointer group fade-in-up stagger-${i % 5 + 1} ${visibleSections.has('work') ? 'visible' : ''} block`}
+              >
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div className="flex-1">
+                    <h3 className="text-3xl md:text-4xl font-display font-semibold mb-2 group-hover:translate-x-2 transition">{project.name}</h3>
+                    <p className="text-neutral-600 text-sm mb-1">{project.category}</p>
+                    <p className="text-neutral-500 text-xs">{project.desc}</p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span className="text-neutral-400 text-sm">{project.year}</span>
+                    <ArrowRight className="text-neutral-400 group-hover:text-black group-hover:translate-x-2 transition" size={20} />
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Packages */}
       <section id="packages" className="py-24 px-6 bg-white" ref={(el) => (sectionRefs.current[1] = el)} data-section="packages">
         <div className="max-w-7xl mx-auto">
@@ -601,42 +636,6 @@ const maintenance = [
           </p>
 
           <QuoteCalculator />
-        </div>
-      </section>
-
-      {/* Work */}
-      <section id="work" className="py-24 px-6 bg-white" ref={(el) => (sectionRefs.current[3] = el)} data-section="work">
-        <div className="max-w-7xl mx-auto">
-          <h2 className={`text-5xl md:text-6xl font-display font-bold mb-4 text-center tracking-tight fade-in-up ${visibleSections.has('work') ? 'visible' : ''}`}>
-            Selected Work
-          </h2>
-          <p className={`text-center text-neutral-600 mb-16 fade-in-up stagger-1 ${visibleSections.has('work') ? 'visible' : ''}`}>
-            Recent projects we're proud of
-          </p>
-
-          <div className="space-y-1">
-            {projects.map((project, i) => (
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                key={i}
-                className={`border-t border-neutral-200 py-8 hover:bg-neutral-50 transition cursor-pointer group fade-in-up stagger-${i % 5 + 1} ${visibleSections.has('work') ? 'visible' : ''} block`}
-              >
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                  <div className="flex-1">
-                    <h3 className="text-3xl md:text-4xl font-display font-semibold mb-2 group-hover:translate-x-2 transition">{project.name}</h3>
-                    <p className="text-neutral-600 text-sm mb-1">{project.category}</p>
-                    <p className="text-neutral-500 text-xs">{project.desc}</p>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-neutral-400 text-sm">{project.year}</span>
-                    <ArrowRight className="text-neutral-400 group-hover:text-black group-hover:translate-x-2 transition" size={20} />
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
         </div>
       </section>
 
