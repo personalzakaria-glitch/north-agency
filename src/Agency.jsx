@@ -401,10 +401,10 @@ const maintenance = [
 
             <div className="hidden md:flex gap-12 text-sm font-medium">
               <a href="#services" className="hover:text-neutral-600 transition">Services</a>
+              <a href="#about" className="hover:text-neutral-600 transition">About</a>
+              <a href="#work" className="hover:text-neutral-600 transition">Work</a>
               <a href="#packages" className="hover:text-neutral-600 transition">Packages</a>
               <a href="#calculator" className="hover:text-neutral-600 transition">Calculator</a>
-              <a href="#work" className="hover:text-neutral-600 transition">Work</a>
-              <a href="#about" className="hover:text-neutral-600 transition">About</a>
               <a href="#contact" className="hover:text-neutral-600 transition">Contact</a>
             </div>
 
