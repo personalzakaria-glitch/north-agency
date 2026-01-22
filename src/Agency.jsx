@@ -247,13 +247,13 @@ const PRICING = {
     }
   };
 
-  const services = [
-    { icon: Code, title: 'Website Development', desc: 'Professional websites that work flawlessly on every device. Fast loading, mobile-optimized, and built to rank on Google.' },
-    { icon: Palette, title: 'UI/UX Design', desc: 'Beautiful, intuitive designs that guide visitors to take action. We create experiences your customers will love.' },
-    { icon: Zap, title: 'Speed Optimization', desc: 'Lightning-fast websites that keep visitors engaged. Every second counts—we make sure yours load instantly.' },
-    { icon: Users, title: 'Small Business Websites', desc: 'Affordable web solutions built for small businesses. Get online fast with a site that actually brings in customers.' },
-    { icon: Award, title: 'Landing Pages', desc: 'High-converting landing pages designed to capture leads and drive sales. Perfect for campaigns and product launches.' }
-  ];
+const services = [
+  { icon: Code, title: 'Get Online Fast', desc: 'Professional site that works on any device. Live in 2 weeks, ready to bring in customers.' },
+  { icon: Award, title: 'Lead Capture Pages', desc: 'Single page designed to collect emails and phone numbers. Perfect for running ads.' },
+  { icon: Zap, title: 'Fix Your Slow Site', desc: 'Site taking forever to load? We will get it under 2 seconds so you stop losing visitors.' },
+  { icon: Palette, title: 'Outdated Site Refresh', desc: 'Make your current website look modern and actually convert. No full rebuild needed.' },
+  { icon: Users, title: 'Start Selling Online', desc: 'E-commerce setup with payments, cart, and product pages. Everything to launch your store.' }
+];
 const packages = [
   {
     name: "Starter",
@@ -335,14 +335,14 @@ const maintenance = [
 ];
 
   const projects = [
-    { name: 'Buildify', category: 'AI Agent Platform', year: '2024', url: 'https://buildify-north.vercel.app/', desc: 'Intelligent AI platform helping businesses automate workflows and scale operations' },
-    { name: 'Landing Project', category: 'Marketing Site', year: '2024', url: 'https://landingproject-north.vercel.app/', desc: 'Conversion-optimized landing page driving measurable results' },
-    { name: 'Agentix', category: 'AI Solutions', year: '2024', url: 'https://agentix-north.vercel.app/', desc: 'Smart automation platform streamlining business processes' },
-    { name: 'Pixel IO', category: 'Digital Agency', year: '2024', url: 'https://pixel-io-north.vercel.app/', desc: 'Creative agency site showcasing design and development excellence' },
-    { name: 'Prompt2App', category: 'AI Builder', year: '2024', url: 'https://prompt2app-north.vercel.app/', desc: 'Revolutionary tool turning ideas into working applications instantly' },
-    { name: 'Saasly', category: 'SaaS Platform', year: '2024', url: 'https://saasly-north.vercel.app/', desc: 'Complete solution for launching and scaling SaaS products fast' },
-    { name: 'SlideX', category: 'Presentation Tool', year: '2024', url: 'https://slidex-north.vercel.app/', desc: 'AI-powered presentation builder creating slides in seconds' },
-    { name: 'Pixel', category: 'Template', year: '2024', url: 'https://pixel-north.vercel.app/', desc: 'Professional Next.js starter template for modern websites' }
+    { name: 'Buildify', category: 'AI Agent Platform', year: '2026', url: 'https://buildify-north.vercel.app/', desc: 'Intelligent AI platform helping businesses automate workflows and scale operations' },
+    { name: 'Landing Project', category: 'Marketing Site', year: '2026', url: 'https://landingproject-north.vercel.app/', desc: 'Conversion-optimized landing page driving measurable results' },
+    { name: 'Agentix', category: 'AI Solutions', year: '2026', url: 'https://agentix-north.vercel.app/', desc: 'Smart automation platform streamlining business processes' },
+    { name: 'Pixel IO', category: 'Digital Agency', year: '2026', url: 'https://pixel-io-north.vercel.app/', desc: 'Creative agency site showcasing design and development excellence' },
+    { name: 'Prompt2App', category: 'AI Builder', year: '2026', url: 'https://prompt2app-north.vercel.app/', desc: 'Revolutionary tool turning ideas into working applications instantly' },
+    { name: 'Saasly', category: 'SaaS Platform', year: '2026', url: 'https://saasly-north.vercel.app/', desc: 'Complete solution for launching and scaling SaaS products fast' },
+    { name: 'SlideX', category: 'Presentation Tool', year: '2026', url: 'https://slidex-north.vercel.app/', desc: 'AI-powered presentation builder creating slides in seconds' },
+    { name: 'Pixel', category: 'Template', year: '2026', url: 'https://pixel-north.vercel.app/', desc: 'Professional Next.js starter template for modern websites' }
   ];
 
   return (
@@ -432,14 +432,14 @@ const maintenance = [
       {/* Hero */}
       <section className="min-h-screen flex items-center justify-center px-6 bg-gradient-to-br from-white via-neutral-50 to-white">
         <div className="max-w-5xl text-center">
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold mb-8 tracking-tighter leading-none">
-            Your Vision,<br />Our Expertise
+          <h1 className="text-6xl md:text-6xl lg:text-7xl font-display font-bold mb-8 tracking-tighter leading-none">
+            Websites That Actually Make You Money
           </h1>
           <p className="text-lg md:text-xl text-neutral-600 mb-12 max-w-2xl mx-auto font-light">
-            Transform your business with a professional website. Fast, modern, and built to convert—starting at just $500
+            Most web developers create good-looking sites that just sit there looking good and doing nothing. Most web developers are not like me because I create conversion machines, fast-loading sites with a solid design optimized for all devices, looking to convert your visitors into paying customers. You will see results within weeks, not months. Fixed price, fixed time, no bullshit.
           </p>
           <a href="#contact" className="inline-flex items-center gap-2 bg-black text-white px-8 py-4 text-sm font-medium tracking-wide btn-hover transition relative z-10">
-            START A PROJECT <ArrowRight size={16} />
+            Let's Talk About Your Site <ArrowRight size={16} />
           </a>
         </div>
       </section>
@@ -451,7 +451,7 @@ const maintenance = [
             Our Services
           </h2>
           <p className={`text-center text-neutral-600 mb-16 fade-in-up stagger-1 ${visibleSections.has('services') ? 'visible' : ''}`}>
-            What we do best
+            What makes us different
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -470,19 +470,19 @@ const maintenance = [
       </section>
 
            {/* About */}
-      <section id="about" className="py-24 px-6 bg-neutral-50" ref={(el) => (sectionRefs.current[4] = el)} data-section="about">
+<section id="about" className="py-24 px-6 bg-neutral-50" ref={(el) => (sectionRefs.current[4] = el)} data-section="about">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className={`text-5xl md:text-6xl font-display font-bold mb-8 tracking-tight fade-in-up ${visibleSections.has('about') ? 'visible' : ''}`}>
-            About North
+            Why North
           </h2>
           <p className={`text-lg md:text-xl text-neutral-700 leading-relaxed mb-8 font-light fade-in-up stagger-1 ${visibleSections.has('about') ? 'visible' : ''}`}>
-            We're a web development agency that helps small businesses succeed online. Based on proven results, not empty promises—we build websites that actually work for your business. Fast, affordable, and designed to grow with you.
+            Most agencies build websites that look nice but do nothing for your bottom line. We build sites that generate leads and revenue. Our clients average 3x more customer inquiries in the first 60 days compared to their old sites.
           </p>
           <div className="grid grid-cols-3 gap-8 pt-12">
             {[
-              { value: '20+', label: 'Projects Delivered' },
-              { value: '100%', label: 'Client Satisfaction' },
-              { value: '2-4wk', label: 'Average Delivery' }
+              { value: '3.2x', label: 'Average Lead Increase' },
+              { value: '60 days', label: 'Typical ROI Timeline' },
+              { value: '2 weeks', label: 'Launch Time' }
             ].map((stat, i) => (
               <div key={i} className={`fade-in-up stagger-${i + 2} ${visibleSections.has('about') ? 'visible' : ''}`}>
                 <div className="text-5xl font-display font-bold mb-2">{stat.value}</div>
@@ -712,7 +712,7 @@ const maintenance = [
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-2xl font-display font-semibold tracking-tight">NORTH</div>
             <div className="text-neutral-400 text-sm">
-              © 2024 North Agency. All rights reserved.
+              © 2026 North Agency. All rights reserved.
             </div>
           </div>
         </div>
