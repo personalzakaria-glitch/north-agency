@@ -336,12 +336,10 @@ const maintenance = [
 
   const projects = [
     { name: 'Buildify', category: 'AI Agent Platform', year: '2026', url: 'https://buildify-north.vercel.app/', desc: 'Intelligent AI platform helping businesses automate workflows and scale operations' },
-    { name: 'Landing Project', category: 'Marketing Site', year: '2026', url: 'https://landingproject-north.vercel.app/', desc: 'Conversion-optimized landing page driving measurable results' },
     { name: 'Agentix', category: 'AI Solutions', year: '2026', url: 'https://agentix-north.vercel.app/', desc: 'Smart automation platform streamlining business processes' },
     { name: 'Pixel IO', category: 'Digital Agency', year: '2026', url: 'https://pixel-io-north.vercel.app/', desc: 'Creative agency site showcasing design and development excellence' },
     { name: 'Prompt2App', category: 'AI Builder', year: '2026', url: 'https://prompt2app-north.vercel.app/', desc: 'Revolutionary tool turning ideas into working applications instantly' },
     { name: 'Saasly', category: 'SaaS Platform', year: '2026', url: 'https://saasly-north.vercel.app/', desc: 'Complete solution for launching and scaling SaaS products fast' },
-    { name: 'SlideX', category: 'Presentation Tool', year: '2026', url: 'https://slidex-north.vercel.app/', desc: 'AI-powered presentation builder creating slides in seconds' },
     { name: 'Pixel', category: 'Template', year: '2026', url: 'https://pixel-north.vercel.app/', desc: 'Professional Next.js starter template for modern websites' }
   ];
 
