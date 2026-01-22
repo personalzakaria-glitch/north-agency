@@ -434,7 +434,7 @@ const maintenance = [
             Websites That Actually Make You Money
           </h1>
           <p className="text-lg md:text-xl text-neutral-600 mb-12 max-w-2xl mx-auto font-light">
-            Most web developers create good-looking sites that just sit there looking good and doing nothing. Most web developers are not like me because I create conversion machines, fast-loading sites with a solid design optimized for all devices, looking to convert your visitors into paying customers. You will see results within weeks, not months. Fixed price, fixed time, no bullshit.
+            Fast, conversion-focused websites that load instantly, look great on every device, and turn visitors into customers.
           </p>
           <a href="#contact" className="inline-flex items-center gap-2 bg-black text-white px-8 py-4 text-sm font-medium tracking-wide btn-hover transition relative z-10">
             Let's Talk About Your Site <ArrowRight size={16} />
