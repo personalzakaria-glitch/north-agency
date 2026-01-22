@@ -11,23 +11,23 @@ export default function NorthAgency() {
 
   const PRICING = {
     packages: {
-      'Express': [400, 400],
-      'Starter': [500, 800],
-      'Business': [1500, 2500],
+      'Express': [200, 300],
+      'Starter': [300, 500],
+      'Business': [1000, 2000],
       'Custom': [0, 0]
     },
     addons: {
-      'Landing Page': [300, 600],
-      'SEO Setup': [400, 800],
-      'Speed Optimization': [250, 500],
-      'Website Redesign': [1500, 3000],
-      'Hosting Setup': [150, 300],
+      'Landing Page': [300, 400],
+      'SEO Setup': [50, 100],
+      'Speed Optimization': [25, 50],
+      'Website Redesign': [150, 300],
+      'Hosting Setup': [50, 100],
       'Copywriting': [50, 100]
     },
     maintenance: {
       'Basic Care': [50, 50],
-      'Growth Care': [150, 150],
-      'Website Growth': [300, 600]
+      'Growth Care': [75, 75],
+      'Website Growth': [150, 150]
     }
   };
 
