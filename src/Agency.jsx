@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, ArrowRight, Code, Palette, Zap, Users, Award, Mail, Calculator } from 'lucide-react';
+import { Menu, X, ArrowRight, Code, Palette, Zap, Users, Award, Mail } from 'lucide-react';
 
 export default function NorthAgency() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -8,196 +8,6 @@ export default function NorthAgency() {
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const sectionRefs = useRef([]);
-
-const PRICING = {
-  packages: {
-    Starter: [399, 399],
-    Business: [799, 799],
-    Premium: [1499, 1499],
-    Custom: [0, 0],
-  },
-  addons: {
-    "Extra Page": [75, 75],
-    Booking: [150, 150],
-  },
-  maintenance: {
-    Care: [49, 49],
-    Growth: [149, 149],
-  },
-};
-
-  const QuoteCalculator = () => {
-    const [pkg, setPkg] = useState('');
-    const [addons, setAddons] = useState([]);
-    const [maint, setMaint] = useState('');
-    const [form, setForm] = useState(false);
-
-    const calcTotal = () => {
-      let min = 0, max = 0;
-      
-      if (pkg && pkg !== 'Custom') {
-        const [pMin, pMax] = PRICING.packages[pkg];
-        min += pMin;
-        max += pMax;
-      }
-      
-      addons.forEach(a => {
-        const [aMin, aMax] = PRICING.addons[a];
-        min += aMin;
-        max += aMax;
-      });
-      
-      if (maint && maint !== 'None') {
-        const [mMin, mMax] = PRICING.maintenance[maint];
-        min += mMin;
-        max += mMax;
-      }
-      
-      return [min, max];
-    };
-
-    const [min, max] = calcTotal();
-
-    const toggle = (item) => setAddons(prev => 
-      prev.includes(item) ? prev.filter(a => a !== item) : [...prev, item]
-    );
-
-    const submit = async (e) => {
-      e.preventDefault();
-      const fd = new FormData(e.target);
-      fd.append('package', pkg);
-      fd.append('addons', addons.join(', ') || 'None');
-      fd.append('maintenance', maint || 'None');
-      fd.append('estimate', pkg === 'Custom' ? 'TBD' : `${min} - ${max}`);
-
-      try {
-        await fetch('https://formspree.io/f/xqeejkdo', {
-          method: 'POST',
-          body: fd,
-          headers: { 'Accept': 'application/json' }
-        });
-        alert('Quote sent! We\'ll contact you soon.');
-        setPkg('');
-        setAddons([]);
-        setMaint('');
-        setForm(false);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    return (
-      <div className="bg-white p-8 border-2 border-neutral-200">
-        <div className="space-y-8">
-          <div>
-            <label className="block text-sm font-medium mb-3">Website Package</label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {Object.keys(PRICING.packages).map(p => (
-                <button
-                  key={p}
-                  onClick={() => setPkg(p)}
-                  className={`p-3 text-sm border-2 transition ${pkg === p ? 'border-black bg-black text-white' : 'border-neutral-200 hover:border-black'}`}
-                >
-                  {p}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-3">Add-Ons (Optional)</label>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {Object.keys(PRICING.addons).map(a => (
-                <button
-                  key={a}
-                  onClick={() => toggle(a)}
-                  className={`p-3 text-sm border-2 transition ${addons.includes(a) ? 'border-black bg-black text-white' : 'border-neutral-200 hover:border-black'}`}
-                >
-                  {a}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-3">Maintenance (Optional)</label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <button
-                onClick={() => setMaint('None')}
-                className={`p-3 text-sm border-2 transition ${maint === 'None' ? 'border-black bg-black text-white' : 'border-neutral-200 hover:border-black'}`}
-              >
-                None
-              </button>
-              {Object.keys(PRICING.maintenance).map(m => (
-                <button
-                  key={m}
-                  onClick={() => setMaint(m)}
-                  className={`p-3 text-sm border-2 transition ${maint === m ? 'border-black bg-black text-white' : 'border-neutral-200 hover:border-black'}`}
-                >
-                  {m}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="pt-6 border-t-2 border-neutral-200">
-            <div className="flex justify-between items-center mb-4">
-              <span className="text-2xl font-display font-bold">Estimated Total:</span>
-              <span className="text-4xl font-display font-bold">
-                {pkg === 'Custom' ? 'TBD' : !pkg ? '$0' : min === max ? `${min}` : `${min} - ${max}`}
-              </span>
-            </div>
-
-            <div className="bg-neutral-50 p-4 mb-6 text-xs text-neutral-600 space-y-1">
-              <p>• Final pricing depends on project scope and complexity</p>
-              <p>• Add-on prices vary based on requirements and implementation</p>
-              <p>• Custom projects quoted individually after consultation</p>
-              <p>• Monthly maintenance is billed separately and can be canceled anytime</p>
-            </div>
-
-            {!form ? (
-              <button
-                onClick={() => setForm(true)}
-                disabled={!pkg}
-                className="w-full bg-black text-white px-8 py-4 text-sm font-medium tracking-wide btn-hover transition disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                REQUEST THIS QUOTE
-              </button>
-            ) : (
-              <form onSubmit={submit} className="space-y-4">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  required
-                  className="w-full border-2 border-neutral-200 px-4 py-3 focus:border-black outline-none transition"
-                />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
-                  required
-                  className="w-full border-2 border-neutral-200 px-4 py-3 focus:border-black outline-none transition"
-                />
-                <textarea
-                  name="message"
-                  placeholder="Project Details (Optional)"
-                  rows="3"
-                  className="w-full border-2 border-neutral-200 px-4 py-3 focus:border-black outline-none transition"
-                ></textarea>
-                <button
-                  type="submit"
-                  className="w-full bg-black text-white px-8 py-4 text-sm font-medium tracking-wide btn-hover transition"
-                >
-                  SEND QUOTE REQUEST
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -233,8 +43,8 @@ const PRICING = {
         method: 'POST',
         body: formData,
         headers: {
-          'Accept': 'application/json'
-        }
+          Accept: 'application/json',
+        },
       });
 
       if (response.ok) {
@@ -247,42 +57,51 @@ const PRICING = {
     }
   };
 
-const services = [
-  { icon: Code, title: 'Get Online Fast', desc: 'Professional site that works on any device. Live in 2 weeks, ready to bring in customers.' },
-  { icon: Award, title: 'Lead Capture Pages', desc: 'Single page designed to collect emails and phone numbers. Perfect for running ads.' },
-  { icon: Zap, title: 'Fix Your Slow Site', desc: 'Site taking forever to load? We will get it under 2 seconds so you stop losing visitors.' },
-  { icon: Palette, title: 'Outdated Site Refresh', desc: 'Make your current website look modern and actually convert. No full rebuild needed.' },
-  { icon: Users, title: 'Start Selling Online', desc: 'E-commerce setup with payments, cart, and product pages. Everything to launch your store.' }
-];
+  const services = [
+    {
+      icon: Code,
+      title: 'Get Online Fast',
+      desc: 'Professional site that works on any device. Live in 2 weeks, ready to bring in customers.',
+    },
+    {
+      icon: Award,
+      title: 'Lead Capture Pages',
+      desc: 'Single page designed to collect emails and phone numbers. Perfect for running ads.',
+    },
+    {
+      icon: Zap,
+      title: 'Fix Your Slow Site',
+      desc: 'Site taking forever to load? We will get it under 2 seconds so you stop losing visitors.',
+    },
+    {
+      icon: Palette,
+      title: 'Outdated Site Refresh',
+      desc: 'Make your current website look modern and actually convert. No full rebuild needed.',
+    },
+    {
+      icon: Users,
+      title: 'Start Selling Online',
+      desc: 'E-commerce setup with payments, cart, and product pages. Everything to launch your store.',
+    },
+  ];
 const packages = [
   {
     name: "Starter",
-    price: "$399",
+    price: "$279",
     description: "Best for simple business sites.",
-    features: [
-      "1–3 pages",
-      "Mobile-responsive design",
-      "Contact form",
-      "Basic SEO setup",
-    ],
+    features: ["1–3 pages", "Mobile-responsive design", "Contact form", "Basic SEO setup"],
     highlight: false,
   },
   {
     name: "Business",
-    price: "$799",
+    price: "$500",
     description: "Best for growing businesses.",
-    features: [
-      "Up to 6 pages",
-      "Better UI/UX layout",
-      "Speed optimization",
-      "SEO setup",
-      "Lead capture form",
-    ],
+    features: ["Up to 6 pages", "Better UI/UX layout", "Speed optimization", "SEO setup", "Lead capture form"],
     highlight: true,
   },
   {
     name: "Premium",
-    price: "$1,499",
+    price: "$1,049",
     description: "Best for brands that want the best.",
     features: [
       "Up to 10 pages",
@@ -297,24 +116,20 @@ const packages = [
     name: "Custom",
     price: "By Quote",
     description: "Custom scope & advanced features.",
-    features: [
-      "Custom design + features",
-      "Integrations",
-      "E-commerce (optional)",
-      "Custom timeline",
-    ],
+    features: ["Custom design + features", "Integrations", "E-commerce (optional)", "Custom timeline"],
     highlight: false,
   },
 ];
+
 const addons = [
   {
     name: "Extra Page",
-    price: "+$75",
+    price: "+$50",
     desc: "Add an extra page to your website",
   },
   {
     name: "Booking",
-    price: "+$150",
+    price: "+$75",
     desc: "Booking system / appointment integration",
   },
 ];
@@ -322,25 +137,62 @@ const addons = [
 const maintenance = [
   {
     name: "Care",
-    price: "$49 / month",
+    price: "$25 / month",
     features: ["Updates", "Backups", "Security monitoring", "Email support"],
     popular: false,
   },
   {
     name: "Growth",
-    price: "$149 / month",
+    price: "$50 / month",
     features: ["Content updates", "Performance checks", "Priority support"],
     popular: true,
   },
 ];
 
+
   const projects = [
-    { name: 'Buildify', category: 'AI Agent Platform', year: '2026', url: 'https://buildify-north.vercel.app/', desc: 'Intelligent AI platform helping businesses automate workflows and scale operations' },
-    { name: 'Agentix', category: 'AI Solutions', year: '2026', url: 'https://agentix-north.vercel.app/', desc: 'Smart automation platform streamlining business processes' },
-    { name: 'Pixel IO', category: 'Digital Agency', year: '2026', url: 'https://pixel-io-north.vercel.app/', desc: 'Creative agency site showcasing design and development excellence' },
-    { name: 'Prompt2App', category: 'AI Builder', year: '2026', url: 'https://prompt2app-north.vercel.app/', desc: 'Revolutionary tool turning ideas into working applications instantly' },
-    { name: 'Saasly', category: 'SaaS Platform', year: '2026', url: 'https://saasly-north.vercel.app/', desc: 'Complete solution for launching and scaling SaaS products fast' },
-    { name: 'Pixel', category: 'Template', year: '2026', url: 'https://pixel-north.vercel.app/', desc: 'Professional Next.js starter template for modern websites' }
+    {
+      name: 'Buildify',
+      category: 'AI Agent Platform',
+      year: '2026',
+      url: 'https://buildify-north.vercel.app/',
+      desc: 'Intelligent AI platform helping businesses automate workflows and scale operations',
+    },
+    {
+      name: 'Agentix',
+      category: 'AI Solutions',
+      year: '2026',
+      url: 'https://agentix-north.vercel.app/',
+      desc: 'Smart automation platform streamlining business processes',
+    },
+    {
+      name: 'Pixel IO',
+      category: 'Digital Agency',
+      year: '2026',
+      url: 'https://pixel-io-north.vercel.app/',
+      desc: 'Creative agency site showcasing design and development excellence',
+    },
+    {
+      name: 'Prompt2App',
+      category: 'AI Builder',
+      year: '2026',
+      url: 'https://prompt2app-north.vercel.app/',
+      desc: 'Revolutionary tool turning ideas into working applications instantly',
+    },
+    {
+      name: 'Saasly',
+      category: 'SaaS Platform',
+      year: '2026',
+      url: 'https://saasly-north.vercel.app/',
+      desc: 'Complete solution for launching and scaling SaaS products fast',
+    },
+    {
+      name: 'Pixel',
+      category: 'Template',
+      year: '2026',
+      url: 'https://pixel-north.vercel.app/',
+      desc: 'Professional Next.js starter template for modern websites',
+    },
   ];
 
   return (
@@ -402,7 +254,6 @@ const maintenance = [
               <a href="#about" className="hover:text-neutral-600 transition">About</a>
               <a href="#work" className="hover:text-neutral-600 transition">Work</a>
               <a href="#packages" className="hover:text-neutral-600 transition">Packages</a>
-              <a href="#calculator" className="hover:text-neutral-600 transition">Calculator</a>
               <a href="#contact" className="hover:text-neutral-600 transition">Contact</a>
             </div>
 
@@ -418,7 +269,6 @@ const maintenance = [
             <div className="px-6 py-6 space-y-4 text-sm font-medium">
               <a href="#services" onClick={() => setIsMenuOpen(false)} className="block">Services</a>
               <a href="#packages" onClick={() => setIsMenuOpen(false)} className="block">Packages</a>
-              <a href="#calculator" onClick={() => setIsMenuOpen(false)} className="block">Calculator</a>
               <a href="#work" onClick={() => setIsMenuOpen(false)} className="block">Work</a>
               <a href="#about" onClick={() => setIsMenuOpen(false)} className="block">About</a>
               <a href="#contact" onClick={() => setIsMenuOpen(false)} className="block">Contact</a>
@@ -467,8 +317,8 @@ const maintenance = [
         </div>
       </section>
 
-           {/* About */}
-<section id="about" className="py-24 px-6 bg-neutral-50" ref={(el) => (sectionRefs.current[4] = el)} data-section="about">
+      {/* About */}
+      <section id="about" className="py-24 px-6 bg-neutral-50" ref={(el) => (sectionRefs.current[3] = el)} data-section="about">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className={`text-5xl md:text-6xl font-display font-bold mb-8 tracking-tight fade-in-up ${visibleSections.has('about') ? 'visible' : ''}`}>
             Why North
@@ -480,7 +330,7 @@ const maintenance = [
             {[
               { value: '3.2x', label: 'Average Lead Increase' },
               { value: '60 days', label: 'Typical ROI Timeline' },
-              { value: '2 weeks', label: 'Launch Time' }
+              { value: '2 weeks', label: 'Launch Time' },
             ].map((stat, i) => (
               <div key={i} className={`fade-in-up stagger-${i + 2} ${visibleSections.has('about') ? 'visible' : ''}`}>
                 <div className="text-5xl font-display font-bold mb-2">{stat.value}</div>
@@ -491,7 +341,8 @@ const maintenance = [
         </div>
       </section>
 
-            <section id="work" className="py-24 px-6 bg-white" ref={(el) => (sectionRefs.current[3] = el)} data-section="work">
+      {/* Work */}
+      <section id="work" className="py-24 px-6 bg-white" ref={(el) => (sectionRefs.current[2] = el)} data-section="work">
         <div className="max-w-7xl mx-auto">
           <h2 className={`text-5xl md:text-6xl font-display font-bold mb-4 text-center tracking-tight fade-in-up ${visibleSections.has('work') ? 'visible' : ''}`}>
             Selected Work
@@ -511,7 +362,9 @@ const maintenance = [
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div className="flex-1">
-                    <h3 className="text-3xl md:text-4xl font-display font-semibold mb-2 group-hover:translate-x-2 transition">{project.name}</h3>
+                    <h3 className="text-3xl md:text-4xl font-display font-semibold mb-2 group-hover:translate-x-2 transition">
+                      {project.name}
+                    </h3>
                     <p className="text-neutral-600 text-sm mb-1">{project.category}</p>
                     <p className="text-neutral-500 text-xs">{project.desc}</p>
                   </div>
@@ -623,22 +476,8 @@ const maintenance = [
         </div>
       </section>
 
-      {/* Package Calculator */}
-      <section id="calculator" className="py-24 px-6 bg-neutral-50" ref={(el) => (sectionRefs.current[2] = el)} data-section="calculator">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-5xl md:text-6xl font-display font-bold mb-4 text-center tracking-tight">
-            Build Your Quote
-          </h2>
-          <p className="text-center text-neutral-600 mb-12">
-            Select what you need and get an instant estimate
-          </p>
-
-          <QuoteCalculator />
-        </div>
-      </section>
-
       {/* Contact */}
-      <section id="contact" className="py-24 px-6 bg-black text-white" ref={(el) => (sectionRefs.current[5] = el)} data-section="contact">
+      <section id="contact" className="py-24 px-6 bg-black text-white" ref={(el) => (sectionRefs.current[4] = el)} data-section="contact">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className={`text-5xl md:text-6xl font-display font-bold mb-6 tracking-tight fade-in-up ${visibleSections.has('contact') ? 'visible' : ''}`}>
             Let's Work Together
@@ -653,10 +492,7 @@ const maintenance = [
             </a>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className={`max-w-xl mx-auto space-y-6 fade-in-up stagger-3 ${visibleSections.has('contact') ? 'visible' : ''}`}
-          >
+          <form onSubmit={handleSubmit} className={`max-w-xl mx-auto space-y-6 fade-in-up stagger-3 ${visibleSections.has('contact') ? 'visible' : ''}`}>
             {formSubmitted && (
               <div className="bg-white text-black px-6 py-3 text-center mb-4 font-medium">
                 MESSAGE SENT ✓
@@ -708,9 +544,7 @@ const maintenance = [
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-2xl font-display font-semibold tracking-tight">NORTH</div>
-            <div className="text-neutral-400 text-sm">
-              © 2026 North Agency. All rights reserved.
-            </div>
+            <div className="text-neutral-400 text-sm">© 2026 North Agency. All rights reserved.</div>
           </div>
         </div>
       </footer>
