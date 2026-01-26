@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, ArrowRight, Code, Palette, Zap, Users, Award, Mail } from 'lucide-react';
+import { Menu, X, ArrowRight, Code, Palette, Zap, Users, Award, Mail, Phone } from 'lucide-react';
 
 export default function NorthAgency() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [visibleSections, setVisibleSections] = useState(new Set());
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formError, setFormError] = useState(false);
+
+  // spam protection
+  const formStartTimeRef = useRef(Date.now());
 
   const sectionRefs = useRef([]);
 
@@ -36,23 +40,44 @@ export default function NorthAgency() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError(false);
+
     const formData = new FormData(e.target);
+
+    // Honeypot check (bots fill hidden fields)
+    const hp = formData.get('company_website');
+    if (hp && String(hp).trim().length > 0) {
+      // silently ignore spam
+      setFormSubmitted(true);
+      e.target.reset();
+      setTimeout(() => setFormSubmitted(false), 2000);
+      return;
+    }
+
+    // Time-based check (too fast submit = likely bot)
+    const elapsedMs = Date.now() - formStartTimeRef.current;
+    if (elapsedMs < 2500) {
+      setFormError(true);
+      return;
+    }
 
     try {
       const response = await fetch('https://formspree.io/f/xqeejkdo', {
         method: 'POST',
         body: formData,
-        headers: {
-          Accept: 'application/json',
-        },
+        headers: { Accept: 'application/json' },
       });
 
       if (response.ok) {
         setFormSubmitted(true);
         e.target.reset();
+        formStartTimeRef.current = Date.now();
         setTimeout(() => setFormSubmitted(false), 3000);
+      } else {
+        setFormError(true);
       }
     } catch (error) {
+      setFormError(true);
       console.error('Error:', error);
     }
   };
@@ -60,95 +85,96 @@ export default function NorthAgency() {
   const services = [
     {
       icon: Code,
-      title: 'Get Online Fast',
-      desc: 'Professional site that works on any device. Live in 2 weeks, ready to bring in customers.',
+      title: 'Snel online met een sterke website',
+      desc: 'Een professionele website die op elk toestel perfect werkt. Live binnen 2 weken, klaar om klanten aan te trekken.',
     },
     {
       icon: Award,
-      title: 'Lead Capture Pages',
-      desc: 'Single page designed to collect emails and phone numbers. Perfect for running ads.',
+      title: 'Landingspagina’s die leads opleveren',
+      desc: 'Een slimme one-pager om e-mails en telefoonnummers te verzamelen. Ideaal voor advertenties en campagnes.',
     },
     {
       icon: Zap,
-      title: 'Fix Your Slow Site',
-      desc: 'Site taking forever to load? We will get it under 2 seconds so you stop losing visitors.',
+      title: 'Snellere website = meer aanvragen',
+      desc: 'Laadt je website traag? Wij optimaliseren tot onder 2 seconden zodat je geen bezoekers meer verliest.',
     },
     {
       icon: Palette,
-      title: 'Outdated Site Refresh',
-      desc: 'Make your current website look modern and actually convert. No full rebuild needed.',
+      title: 'Moderne refresh voor je huidige site',
+      desc: 'Maak je website opnieuw strak en overtuigend, zonder een volledige herbouw. Meer vertrouwen, meer conversie.',
     },
     {
       icon: Users,
-      title: 'Start Selling Online',
-      desc: 'E-commerce setup with payments, cart, and product pages. Everything to launch your store.',
+      title: 'Start met online verkopen',
+      desc: 'E-commerce setup met betalingen, winkelmandje en productpagina’s. Klaar om direct te verkopen.',
     },
   ];
-const packages = [
-  {
-    name: "Starter",
-    price: "$279",
-    description: "Best for simple business sites.",
-    features: ["1–3 pages", "Mobile-responsive design", "Contact form", "Basic SEO setup"],
-    highlight: false,
-  },
-  {
-    name: "Business",
-    price: "$500",
-    description: "Best for growing businesses.",
-    features: ["Up to 6 pages", "Better UI/UX layout", "Speed optimization", "SEO setup", "Lead capture form"],
-    highlight: true,
-  },
-  {
-    name: "Premium",
-    price: "$1,049",
-    description: "Best for brands that want the best.",
-    features: [
-      "Up to 10 pages",
-      "Premium UI/UX design",
-      "Advanced performance optimization",
-      "SEO setup",
-      "Priority support",
-    ],
-    highlight: false,
-  },
-  {
-    name: "Custom",
-    price: "By Quote",
-    description: "Custom scope & advanced features.",
-    features: ["Custom design + features", "Integrations", "E-commerce (optional)", "Custom timeline"],
-    highlight: false,
-  },
-];
 
-const addons = [
-  {
-    name: "Extra Page",
-    price: "+$50",
-    desc: "Add an extra page to your website",
-  },
-  {
-    name: "Booking",
-    price: "+$75",
-    desc: "Booking system / appointment integration",
-  },
-];
+  // ~30% goedkoper + charm pricing
+  const packages = [
+    {
+      name: 'Starter',
+      price: '€195',
+      description: 'Voor zelfstandigen en kleine ondernemingen die professioneel online willen staan.',
+      features: ['1–3 pagina’s', 'Mobielvriendelijk design', 'Contactformulier', 'Basis SEO setup'],
+      highlight: false,
+    },
+    {
+      name: 'Business',
+      price: '€349',
+      description: 'Voor bedrijven die meer aanvragen en een sterkere uitstraling willen.',
+      features: ['Tot 6 pagina’s', 'Betere UI/UX structuur', 'Snelheidsoptimalisatie', 'SEO setup', 'Lead capture formulier'],
+      highlight: true,
+    },
+    {
+      name: 'Premium',
+      price: '€735',
+      description: 'Voor merken die topkwaliteit willen en serieus willen groeien.',
+      features: [
+        'Tot 10 pagina’s',
+        'Premium UI/UX design',
+        'Geavanceerde performance optimalisatie',
+        'SEO setup',
+        'Priority support',
+      ],
+      highlight: false,
+    },
+    {
+      name: 'Custom',
+      price: 'Offerte op maat',
+      description: 'Voor custom functies, integraties en grotere projecten.',
+      features: ['Custom design + functies', 'Integraties', 'E-commerce (optioneel)', 'Planning op maat'],
+      highlight: false,
+    },
+  ];
 
-const maintenance = [
-  {
-    name: "Care",
-    price: "$25 / month",
-    features: ["Updates", "Backups", "Security monitoring", "Email support"],
-    popular: false,
-  },
-  {
-    name: "Growth",
-    price: "$50 / month",
-    features: ["Content updates", "Performance checks", "Priority support"],
-    popular: true,
-  },
-];
+  const addons = [
+    {
+      name: 'Extra pagina',
+      price: '+€35',
+      desc: 'Voeg een extra pagina toe aan je website',
+    },
+    {
+      name: 'Boekingssysteem',
+      price: '+€55',
+      desc: 'Afspraakmodule / booking integratie',
+    },
+  ];
 
+  const maintenance = [
+    {
+      name: 'Care',
+      price: '€17 / maand',
+      features: ['Updates', 'Back-ups', 'Security monitoring', 'E-mail support'],
+      popular: false,
+    },
+    {
+      name: 'Growth',
+      price: '€35 / maand',
+      features: ['Content updates', 'Performance checks', 'Priority support'],
+      popular: true,
+    },
+  ];
 
   const projects = [
     {
@@ -156,42 +182,42 @@ const maintenance = [
       category: 'AI Agent Platform',
       year: '2026',
       url: 'https://buildify-north.vercel.app/',
-      desc: 'Intelligent AI platform helping businesses automate workflows and scale operations',
+      desc: 'Slim AI-platform dat bedrijven helpt workflows te automatiseren en sneller te schalen',
     },
     {
       name: 'Agentix',
       category: 'AI Solutions',
       year: '2026',
       url: 'https://agentix-north.vercel.app/',
-      desc: 'Smart automation platform streamlining business processes',
+      desc: 'Automatisatieplatform dat bedrijfsprocessen stroomlijnt',
     },
     {
       name: 'Pixel IO',
       category: 'Digital Agency',
       year: '2026',
       url: 'https://pixel-io-north.vercel.app/',
-      desc: 'Creative agency site showcasing design and development excellence',
+      desc: 'Creatieve agency website met sterke focus op design en development',
     },
     {
       name: 'Prompt2App',
       category: 'AI Builder',
       year: '2026',
       url: 'https://prompt2app-north.vercel.app/',
-      desc: 'Revolutionary tool turning ideas into working applications instantly',
+      desc: 'Tool die ideeën omzet in werkende apps, snel en efficiënt',
     },
     {
       name: 'Saasly',
       category: 'SaaS Platform',
       year: '2026',
       url: 'https://saasly-north.vercel.app/',
-      desc: 'Complete solution for launching and scaling SaaS products fast',
+      desc: 'Complete oplossing om SaaS-producten sneller te lanceren en te schalen',
     },
     {
       name: 'Pixel',
       category: 'Template',
       year: '2026',
       url: 'https://pixel-north.vercel.app/',
-      desc: 'Professional Next.js starter template for modern websites',
+      desc: 'Professionele Next.js starter template voor moderne websites',
     },
   ];
 
@@ -251,9 +277,9 @@ const maintenance = [
 
             <div className="hidden md:flex gap-12 text-sm font-medium">
               <a href="#services" className="hover:text-neutral-600 transition">Services</a>
-              <a href="#about" className="hover:text-neutral-600 transition">About</a>
-              <a href="#work" className="hover:text-neutral-600 transition">Work</a>
-              <a href="#packages" className="hover:text-neutral-600 transition">Packages</a>
+              <a href="#about" className="hover:text-neutral-600 transition">Over ons</a>
+              <a href="#work" className="hover:text-neutral-600 transition">Werk</a>
+              <a href="#packages" className="hover:text-neutral-600 transition">Pakketten</a>
               <a href="#contact" className="hover:text-neutral-600 transition">Contact</a>
             </div>
 
@@ -268,9 +294,9 @@ const maintenance = [
           <div className="md:hidden bg-white border-t">
             <div className="px-6 py-6 space-y-4 text-sm font-medium">
               <a href="#services" onClick={() => setIsMenuOpen(false)} className="block">Services</a>
-              <a href="#packages" onClick={() => setIsMenuOpen(false)} className="block">Packages</a>
-              <a href="#work" onClick={() => setIsMenuOpen(false)} className="block">Work</a>
-              <a href="#about" onClick={() => setIsMenuOpen(false)} className="block">About</a>
+              <a href="#packages" onClick={() => setIsMenuOpen(false)} className="block">Pakketten</a>
+              <a href="#work" onClick={() => setIsMenuOpen(false)} className="block">Werk</a>
+              <a href="#about" onClick={() => setIsMenuOpen(false)} className="block">Over ons</a>
               <a href="#contact" onClick={() => setIsMenuOpen(false)} className="block">Contact</a>
             </div>
           </div>
@@ -281,13 +307,13 @@ const maintenance = [
       <section className="min-h-screen flex items-center justify-center px-6 bg-gradient-to-br from-white via-neutral-50 to-white">
         <div className="max-w-5xl text-center">
           <h1 className="text-6xl md:text-6xl lg:text-7xl font-display font-bold mb-8 tracking-tighter leading-none">
-            Websites That Actually Make You Money
+            Websites die klanten opleveren
           </h1>
           <p className="text-lg md:text-xl text-neutral-600 mb-12 max-w-2xl mx-auto font-light">
-            Fast, conversion-focused websites that load instantly, look great on every device, and turn visitors into customers.
+            Snelle, moderne websites die vertrouwen uitstralen, vlot laden en bezoekers omzetten naar aanvragen.
           </p>
           <a href="#contact" className="inline-flex items-center gap-2 bg-black text-white px-8 py-4 text-sm font-medium tracking-wide btn-hover transition relative z-10">
-            Let's Talk About Your Site <ArrowRight size={16} />
+            Gratis kennismaking <ArrowRight size={16} />
           </a>
         </div>
       </section>
@@ -296,10 +322,10 @@ const maintenance = [
       <section id="services" className="py-24 px-6 bg-neutral-50" ref={(el) => (sectionRefs.current[0] = el)} data-section="services">
         <div className="max-w-7xl mx-auto">
           <h2 className={`text-5xl md:text-6xl font-display font-bold mb-4 text-center tracking-tight fade-in-up ${visibleSections.has('services') ? 'visible' : ''}`}>
-            Our Services
+            Services
           </h2>
           <p className={`text-center text-neutral-600 mb-16 fade-in-up stagger-1 ${visibleSections.has('services') ? 'visible' : ''}`}>
-            What makes us different
+            Gericht op resultaat: meer aanvragen, meer omzet.
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -321,16 +347,17 @@ const maintenance = [
       <section id="about" className="py-24 px-6 bg-neutral-50" ref={(el) => (sectionRefs.current[3] = el)} data-section="about">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className={`text-5xl md:text-6xl font-display font-bold mb-8 tracking-tight fade-in-up ${visibleSections.has('about') ? 'visible' : ''}`}>
-            Why North
+            Waarom North
           </h2>
           <p className={`text-lg md:text-xl text-neutral-700 leading-relaxed mb-8 font-light fade-in-up stagger-1 ${visibleSections.has('about') ? 'visible' : ''}`}>
-            Most agencies build websites that look nice but do nothing for your bottom line. We build sites that generate leads and revenue. Our clients average 3x more customer inquiries in the first 60 days compared to their old sites.
+            Een mooie website is niet genoeg. Wij bouwen websites die helder communiceren, snel laden en gericht zijn op conversie.
+            Het doel is simpel: meer kwalitatieve aanvragen en meer groei.
           </p>
           <div className="grid grid-cols-3 gap-8 pt-12">
             {[
-              { value: '3.2x', label: 'Average Lead Increase' },
-              { value: '60 days', label: 'Typical ROI Timeline' },
-              { value: '2 weeks', label: 'Launch Time' },
+              { value: '3.2x', label: 'Meer aanvragen gemiddeld' },
+              { value: '60 dagen', label: 'Typische ROI termijn' },
+              { value: '3-5 dagen', label: 'Gemiddelde oplevering' },
             ].map((stat, i) => (
               <div key={i} className={`fade-in-up stagger-${i + 2} ${visibleSections.has('about') ? 'visible' : ''}`}>
                 <div className="text-5xl font-display font-bold mb-2">{stat.value}</div>
@@ -345,10 +372,10 @@ const maintenance = [
       <section id="work" className="py-24 px-6 bg-white" ref={(el) => (sectionRefs.current[2] = el)} data-section="work">
         <div className="max-w-7xl mx-auto">
           <h2 className={`text-5xl md:text-6xl font-display font-bold mb-4 text-center tracking-tight fade-in-up ${visibleSections.has('work') ? 'visible' : ''}`}>
-            Selected Work
+            Geselecteerd werk
           </h2>
           <p className={`text-center text-neutral-600 mb-16 fade-in-up stagger-1 ${visibleSections.has('work') ? 'visible' : ''}`}>
-            Recent projects we're proud of
+            Enkele recente projecten
           </p>
 
           <div className="space-y-1">
@@ -383,10 +410,10 @@ const maintenance = [
       <section id="packages" className="py-24 px-6 bg-white" ref={(el) => (sectionRefs.current[1] = el)} data-section="packages">
         <div className="max-w-7xl mx-auto">
           <h2 className={`text-5xl md:text-6xl font-display font-bold mb-4 text-center tracking-tight fade-in-up ${visibleSections.has('packages') ? 'visible' : ''}`}>
-            Website Packages
+            Website pakketten
           </h2>
           <p className={`text-center text-neutral-600 mb-16 fade-in-up stagger-1 ${visibleSections.has('packages') ? 'visible' : ''}`}>
-            Transparent pricing for every budget
+            Duidelijke prijzen, zonder verrassingen
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
@@ -397,11 +424,12 @@ const maintenance = [
               >
                 {pkg.highlight && (
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-black text-white px-3 py-1 text-xs font-medium tracking-wide">
-                    POPULAR
+                    MEEST GEKOZEN
                   </div>
                 )}
                 <h3 className="text-2xl mb-2 font-display font-semibold">{pkg.name}</h3>
                 <div className="text-3xl font-display font-bold mb-4">{pkg.price}</div>
+                <p className="text-sm text-neutral-600 mb-4">{pkg.description}</p>
                 <ul className="space-y-2 mb-6">
                   {pkg.features.map((feature, j) => (
                     <li key={j} className="text-sm text-neutral-600 flex items-start">
@@ -414,14 +442,14 @@ const maintenance = [
                   href="#contact"
                   className={`block text-center ${pkg.highlight ? 'bg-black text-white' : 'bg-white text-black border-2 border-black'} px-4 py-2 text-sm font-medium tracking-wide btn-hover ${pkg.highlight ? '' : 'btn-dark'} transition relative z-10`}
                 >
-                  GET STARTED
+                  Offerte aanvragen
                 </a>
               </div>
             ))}
           </div>
 
           <h3 className={`text-4xl font-display font-bold mb-12 text-center tracking-tight fade-in-up ${visibleSections.has('packages') ? 'visible' : ''}`}>
-            Add-On Services
+            Extra opties
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-24">
@@ -440,7 +468,7 @@ const maintenance = [
           </div>
 
           <h3 className={`text-4xl font-display font-bold mb-12 text-center tracking-tight fade-in-up ${visibleSections.has('packages') ? 'visible' : ''}`}>
-            Maintenance & Support
+            Onderhoud & support
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -451,7 +479,7 @@ const maintenance = [
               >
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-black text-white px-3 py-1 text-xs font-medium tracking-wide">
-                    MOST POPULAR
+                    MEEST POPULAIR
                   </div>
                 )}
                 <h4 className="text-2xl mb-2 font-display font-semibold">{plan.name}</h4>
@@ -468,7 +496,7 @@ const maintenance = [
                   href="#contact"
                   className={`block text-center ${plan.popular ? 'bg-black text-white' : 'bg-white text-black border-2 border-black'} px-4 py-2 text-sm font-medium tracking-wide btn-hover ${plan.popular ? '' : 'btn-dark'} transition relative z-10`}
                 >
-                  SUBSCRIBE
+                  Start abonnement
                 </a>
               </div>
             ))}
@@ -480,30 +508,59 @@ const maintenance = [
       <section id="contact" className="py-24 px-6 bg-black text-white" ref={(el) => (sectionRefs.current[4] = el)} data-section="contact">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className={`text-5xl md:text-6xl font-display font-bold mb-6 tracking-tight fade-in-up ${visibleSections.has('contact') ? 'visible' : ''}`}>
-            Let's Work Together
+            Contacteer ons
           </h2>
           <p className={`text-lg text-neutral-300 mb-12 font-light fade-in-up stagger-1 ${visibleSections.has('contact') ? 'visible' : ''}`}>
-            Have a project in mind? We'd love to hear about it.
+            Vertel kort wat je nodig hebt. We antwoorden snel en duidelijk.
           </p>
 
-          <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 fade-in-up stagger-2 ${visibleSections.has('contact') ? 'visible' : ''}`}>
+          <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center mb-12 fade-in-up stagger-2 ${visibleSections.has('contact') ? 'visible' : ''}`}>
             <a href="mailto:webagencynorth@gmail.com" className="flex items-center gap-2 hover:text-neutral-300 transition">
               <Mail size={20} /> webagencynorth@gmail.com
+            </a>
+
+            <a href="tel:+32492885395" className="flex items-center gap-2 hover:text-neutral-300 transition">
+              <Phone size={20} /> +32 492 88 53 95
             </a>
           </div>
 
           <form onSubmit={handleSubmit} className={`max-w-xl mx-auto space-y-6 fade-in-up stagger-3 ${visibleSections.has('contact') ? 'visible' : ''}`}>
             {formSubmitted && (
               <div className="bg-white text-black px-6 py-3 text-center mb-4 font-medium">
-                MESSAGE SENT ✓
+                Bericht verzonden ✓
               </div>
             )}
+
+            {formError && (
+              <div className="bg-white text-black px-6 py-3 text-center mb-4 font-medium">
+                Verzenden mislukt — probeer opnieuw
+              </div>
+            )}
+
+            {/* Honeypot field (hidden) */}
+            <input
+              type="text"
+              name="company_website"
+              tabIndex="-1"
+              autoComplete="off"
+              className="hidden"
+            />
 
             <div>
               <input
                 type="text"
                 name="name"
-                placeholder="Your Name"
+                placeholder="Naam"
+                required
+                className="w-full bg-transparent border-b border-neutral-600 py-3 focus:border-white outline-none transition"
+              />
+            </div>
+
+            <div>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Telefoonnummer"
                 required
                 className="w-full bg-transparent border-b border-neutral-600 py-3 focus:border-white outline-none transition"
               />
@@ -513,7 +570,7 @@ const maintenance = [
               <input
                 type="email"
                 name="email"
-                placeholder="Your Email"
+                placeholder="E-mail"
                 required
                 className="w-full bg-transparent border-b border-neutral-600 py-3 focus:border-white outline-none transition"
               />
@@ -522,7 +579,7 @@ const maintenance = [
             <div>
               <textarea
                 name="message"
-                placeholder="Tell us about your project"
+                placeholder="Waarmee kunnen we je helpen?"
                 rows="4"
                 required
                 className="w-full bg-transparent border-b border-neutral-600 py-3 focus:border-white outline-none resize-none transition"
@@ -533,8 +590,12 @@ const maintenance = [
               type="submit"
               className="bg-white text-black px-8 py-4 text-sm font-medium tracking-wide btn-hover btn-dark transition w-full sm:w-auto relative z-10"
             >
-              SEND MESSAGE
+              Verstuur bericht
             </button>
+
+            <p className="text-xs text-neutral-400 pt-2">
+              Door te verzenden ga je akkoord dat we je mogen contacteren over je aanvraag.
+            </p>
           </form>
         </div>
       </section>
@@ -544,7 +605,7 @@ const maintenance = [
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-2xl font-display font-semibold tracking-tight">NORTH</div>
-            <div className="text-neutral-400 text-sm">© 2026 North Agency. All rights reserved.</div>
+            <div className="text-neutral-400 text-sm">© 2026 North Agency. Alle rechten voorbehouden.</div>
           </div>
         </div>
       </footer>
